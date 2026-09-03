@@ -1,0 +1,54 @@
+# @package _global_
+# Local training config (small-scale datasets) carla_bucket_v12_dreamer
+defaults:
+  - /data_module: carla_bucket_v12
+  - /model/vision_model: vlm 
+  - /data_module/base_dataset: dataset
+
+model:
+  lr: 3e-5
+  predict_route_as_wps: True
+  speed_wps_mode: 2d
+  language_model:
+    variant: 'OpenGVLab/InternVL2-1B'
+    lora: True
+    lora_alpha: 32
+    lora_r: 16
+    lora_dropout: 0.1
+  vision_model:
+    variant: 'OpenGVLab/InternVL2-1B'
+
+data_module:
+  batch_size: 12  # Adjust based on GPU memory (8GB: 2, 16GB: 4-6)
+  num_workers: 16  # Adjust based on CPU cores
+  base_dataset:
+    # TODO: modify these paths for your machine
+    data_path: /mnt/localssd/simlingo_extracted/
+    bucket_path: /mnt/localssd/workspace/lcs/data/
+    pred_len: 11
+    cut_bottom_quarter: True
+    use_commentary: False
+    use_qa: False
+    qa_augmentation: False
+    img_shift_augmentation: True
+    img_shift_augmentation_prob: 0.5
+    hist_len: 1
+    route_as: command
+    use_lmdrive_commands: True
+    use_old_towns: True
+    use_town13: True
+    use_safety_flag: True
+    use_cfg: True  # Whether to enable CFG (Classifier-Free Guidance)
+    cfg_dropout_prob: 0.30  # Probability of dropping command during CFG training (0.0-1.0)
+
+max_epochs: 16
+val_every_n_epochs: 2
+
+gpus: 1  # Single-GPU training
+seed: 42
+name: train_lcs
+enable_wandb: True  # Enable wandb
+
+hydra:
+  run:
+    dir: outputs/${wandb_name}_${name}
