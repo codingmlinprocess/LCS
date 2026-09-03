@@ -1,7 +1,10 @@
 # Latent-Centroid Steering (LCS)
 
-Latent-Centroid Steering: Single-Pass Classifier-Free Guidance for
-Command-Aligned Autonomous Driving
+[Paper](https://arxiv.org/pdf/2608.00237)
+
+**[IROS 2026]** This is the official implementation of the paper:
+
+**Latent-Centroid Steering: Single-Pass Classifier-Free Guidance for Command-Aligned Autonomous Driving**
 
 ## 1. Install environment
 
@@ -42,7 +45,37 @@ LCS also needs the mean-shift deltas file (included in repo):
 data/mean_shift_deltas_cfg03.pt
 ```
 
-## 3. Run training
+## 3. Dataset preparation
+
+LCS training only requires the **driving data** from the [SimLingo dataset](https://huggingface.co/datasets/RenzKa/simlingo) (files prefixed with `data_*`). VQA, commentary, and dreamer labels are not needed.
+
+### Download driving data only
+
+```bash
+# Install huggingface_hub if needed
+pip install huggingface_hub
+
+# Download only the driving data files (data_*.tar.gz)
+huggingface-cli download RenzKa/simlingo \
+  --repo-type dataset \
+  --include "data_*.tar.gz" \
+  --local-dir simlingo_dataset
+```
+
+### Extract to the database directory
+
+```bash
+mkdir -p database/simlingo
+
+for file in simlingo_dataset/data_*.tar.gz; do
+    echo "Extracting $file to database/simlingo/..."
+    tar -xzf "$file" -C database/simlingo/
+done
+```
+
+For more details on the full dataset (language labels, dreamer data, data generation), see the [SimLingo README](https://github.com/RenzKa/simlingo#dataset-download).
+
+## 4. Run training
 
 Edit data paths in `simlingo_training/config/experiment/train_lcs.yaml` and `WORK_DIR` in `scripts/train_lcs.sh`, then:
 
@@ -53,7 +86,7 @@ bash scripts/train_lcs.sh
 # bash scripts/train_lcs.sh experiment=train_lcs gpus=8
 ```
 
-## 4. Run inference
+## 5. Run inference
 
 Edit paths in `scripts/run_eval_cluster.sh` (`ROUTE_DIR`, `CHECKPOINT`, `CARLA_ROOT`, `PROJECT_ROOT`), then:
 
@@ -69,3 +102,16 @@ bash scripts/run_eval_cluster.sh \
 Args: `ROUTE_DIR`, `SEED`, `CHECKPOINT`, `GPU_RANK`.
 
 Agent: `team_code/agent_lcs.py` (config: `team_code/config_lcs.py`).
+
+## Citation
+
+If you find this repository useful for your research, please consider giving us a star 🌟 and citing our paper.
+
+```bibtex
+@article{hu2026latent,
+  title={Latent-Centroid Steering: Single-Pass Classifier-Free Guidance for Command-Aligned Autonomous Driving},
+  author={Hu, Meibo and Wang, Jiamian and Wang, Pichao and Tao, Zhiqiang},
+  journal={arXiv preprint arXiv:2608.00237},
+  year={2026}
+}
+```
