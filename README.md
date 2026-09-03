@@ -1,8 +1,6 @@
 # Latent-Centroid Steering (LCS)
 
-[Paper](https://arxiv.org/pdf/2608.00237)
-
-**[IROS 2026]** This is the official implementation of the paper:
+**[IROS 2026]** This is the official implementation of the [paper](https://arxiv.org/pdf/2608.00237):
 
 **Latent-Centroid Steering: Single-Pass Classifier-Free Guidance for Command-Aligned Autonomous Driving**
 
@@ -99,7 +97,7 @@ bash scripts/run_eval_cluster.sh \
   0
 ```
 
-Args: `ROUTE_DIR`, `SEED`, `CHECKPOINT`, `GPU_RANK`.
+Args: `ROUTE_DIR`, `CHECKPOINT`, `GPU_RANK`.
 
 Agent: `team_code/agent_lcs.py` (config: `team_code/config_lcs.py`).
 
