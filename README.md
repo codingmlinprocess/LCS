@@ -101,6 +101,9 @@ Args: `ROUTE_DIR`, `CHECKPOINT`, `GPU_RANK`.
 
 Agent: `team_code/agent_lcs.py` (config: `team_code/config_lcs.py`).
 
+## Acknowledgment
+This research was supported in part by the National Science Foundation under Grant No. 2502050 and the NVIDIA Academic Grant Program.
+
 ## Citation
 
 If you find this repository useful for your research, please consider giving us a star 🌟 and citing our paper.
